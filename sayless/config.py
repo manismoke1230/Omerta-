@@ -101,7 +101,7 @@ GARMENTS = [
     ("bomber", "Hooded bomber / dark"),
     ("plaid", "Plaid zip jacket"),
     ("denim", "Camo denim"),
-    ("track", "Track jacket / burnt-orange pile"),
+    ("track", "Hero slot / striped hoodie (brief asks for a burnt-orange pile track jacket)"),
 ]
 GARMENT_KEYS = [k for k, _ in GARMENTS]
 GARMENT_LABEL = dict(GARMENTS)

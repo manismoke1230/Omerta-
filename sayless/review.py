@@ -12,7 +12,7 @@ from . import assets
 from .config import (BAR, BEAT, CHARCOAL, CREAM, DURATION, FONT_DISPLAY, FONT_SANS, FONT_SANS_BOLD, FPS,
                      N_FRAMES, ORANGE, SCENES, VO_LINES, scene_at)
 
-STORYBOARD_TIMES = [0.90, 3.55, 5.95, 8.90, 10.95, 13.45, 15.70, 18.85, 22.60]
+STORYBOARD_TIMES = [0.90, 3.55, 5.42, 8.90, 11.35, 13.45, 15.70, 18.85, 22.60]
 SCENE_NOTES = {
     "01": "Already moving at frame 0. The stitch climbs dark knit; pull out to the black-body raglan and its O. Settled by 1.20.",
     "02": "The camo sleeve sweeps the lens and reveals the white-body raglan beside it, shoulders aligned.",
@@ -72,18 +72,19 @@ def burn_in(frame: np.ndarray, i: int, fmt, mode: str = "animatic") -> np.ndarra
         tw = d.textlength(line, font=tiny)
         d.text((W - m - tw, y), line, font=tiny, fill=cream[:3] + (170,))
         y += int(23 * u)
-    # bar / beat grid with playhead
+    # bar / beat grid with playhead (animatic only)
     gy = H - int((34 if fmt.name == "landscape" else 250) * u)
     gx0, gx1 = m, W - m
-    d.line([(gx0, gy), (gx1, gy)], fill=cream[:3] + (120,), width=max(1, int(1.5 * u)))
-    nb = int(round(DURATION / BEAT))
-    for b in range(nb + 1):
-        x = gx0 + (gx1 - gx0) * b / nb
-        bar = b % 4 == 0
-        hgt = int((12 if bar else 5) * u)
-        d.line([(x, gy - hgt), (x, gy)], fill=cream[:3] + (220 if bar else 120,), width=max(1, int((2 if bar else 1) * u)))
-    px = gx0 + (gx1 - gx0) * t / DURATION
-    d.polygon([(px, gy - int(16 * u)), (px - int(6 * u), gy - int(27 * u)), (px + int(6 * u), gy - int(27 * u))], fill=orange)
+    if mode == "animatic":
+        d.line([(gx0, gy), (gx1, gy)], fill=cream[:3] + (120,), width=max(1, int(1.5 * u)))
+        nb = int(round(DURATION / BEAT))
+        for b in range(nb + 1):
+            x = gx0 + (gx1 - gx0) * b / nb
+            bar = b % 4 == 0
+            hgt = int((12 if bar else 5) * u)
+            d.line([(x, gy - hgt), (x, gy)], fill=cream[:3] + (220 if bar else 120,), width=max(1, int((2 if bar else 1) * u)))
+        px = gx0 + (gx1 - gx0) * t / DURATION
+        d.polygon([(px, gy - int(16 * u)), (px - int(6 * u), gy - int(27 * u)), (px + int(6 * u), gy - int(27 * u))], fill=orange)
     # VO caption while the line is expected to be spoken
     for k, (ts, text) in enumerate(VO_LINES):
         dur = 0.5 + 0.075 * len(text)

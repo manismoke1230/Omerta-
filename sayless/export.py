@@ -31,11 +31,8 @@ def _one(i):
 
 def frames(name: str, scale: float, mode: str = "clean", samples=None, start=0, stop=N_FRAMES, procs=None):
     """Yield (index, HxWx3 uint8 bytes) in order, rendered across processes."""
-    film.build(name)                        # warm caches before forking
-    render._copy_textures()
-    render._stage_tile()
     procs = procs or max(1, (os.cpu_count() or 2))
-    ctx = mp.get_context("fork")
+    ctx = mp.get_context("spawn")      # fork + OpenCV threads can deadlock
     with ctx.Pool(procs, initializer=_init, initargs=(name, scale, mode, samples)) as pool:
         yield from pool.imap(_one, range(start, stop), chunksize=2)
 
