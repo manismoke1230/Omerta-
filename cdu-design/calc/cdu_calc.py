@@ -53,6 +53,8 @@ EXT_DP_AVAIL = 100e3        # Pa available to the IT loop at CDU connections
 HX = dict(L=0.479, w=0.107, b=2.0e-3, phi_enl=1.21, chev_deg=60.0,
           t_wall=0.3e-3, k_wall=15.0, d_port=0.024, ch_vol=0.114e-3)
 HX["Dh"] = 2 * HX["b"] / HX["phi_enl"]
+HX.update(cal_h=1.0, cal_f=1.0, k_port=1.4)        # set by calibrate_to_swep() below
+HX_PLATES = 40      # Rev B: 40 plates keeps dP under 15 kPa per side with the SWEP-calibrated model
 HX["A_plate"] = HX["L"] * HX["w"] * HX["phi_enl"]
 
 
@@ -92,10 +94,10 @@ def side(fluid, flow_lpm, n_ch):
     u = V / n_ch / (HX["w"] * HX["b"])
     Re = fluid["rho"] * u * HX["Dh"] / fluid["mu"]
     f, Nu = martin(Re, fluid["Pr"], HX["chev_deg"])
-    h = Nu * fluid["k"] / HX["Dh"]
-    dp_ch = f * HX["L"] / HX["Dh"] * fluid["rho"] * u ** 2 / 2
+    h = Nu * fluid["k"] / HX["Dh"] * HX["cal_h"]
+    dp_ch = f * HX["L"] / HX["Dh"] * fluid["rho"] * u ** 2 / 2 * HX["cal_f"]
     u_port = V / (math.pi / 4 * HX["d_port"] ** 2)
-    dp_port = 1.4 * fluid["rho"] * u_port ** 2 / 2
+    dp_port = HX["k_port"] * fluid["rho"] * u_port ** 2 / 2
     h_kumar = kumar_nu(Re, fluid["Pr"], KUMAR_HT_30) * fluid["k"] / HX["Dh"]
     return dict(u=u, Re=Re, h=h, h_kumar=h_kumar, dp=dp_ch + dp_port)
 
@@ -111,6 +113,49 @@ def hx_perf(n_plates, tcs_lpm, fws_lpm):
     A = (n_plates - 2) * HX["A_plate"]
     U_k = 1.0 / (1 / s1["h_kumar"] + 1 / s2["h_kumar"] + HX["t_wall"] / HX["k_wall"])
     return dict(U=U, A=A, UA=U * A, UA_kumar=U_k * A, tcs=s1, fws=s2, n_tcs=n_tcs, n_fws=n_fws)
+
+
+# ----------------------------------------------------------------------------
+# Calibration against a published SWEP SSP rating (Rev B).
+# B25THx50/1P, counter-current, ethylene glycol 25 mass% / water, 14.0 kW:
+# 0.7349 / 0.6090 kg/s, 24 / 25 channels, clean OHTC 3500 W/m2K,
+# pressure drop 11.4 / 7.36 kPa total, of which ports 1.23 / 0.873 kPa,
+# port diameter 24 mm, port velocity 1.58 / 1.36 m/s.
+# Uncalibrated Martin gave U 2541 W/m2K (0.73x) and dP 5.3 / 3.4 kPa (0.46x).
+# ----------------------------------------------------------------------------
+SWEP_CASE = dict(
+    f1=dict(name="EG25", rho=1026.0, cp=3810.0, mu=0.969e-3, k=0.5042, kgs=0.7349),
+    f2=dict(name="water", rho=990.0, cp=4180.0, mu=0.589e-3, k=0.6383, kgs=0.6090),
+    plates=50, U=3500.0, dp1=11.4e3, dp2=7.36e3, dp_port1=1.23e3, u_port1=1.58)
+
+
+def _swep_eval():
+    c = SWEP_CASE
+    for f in (c["f1"], c["f2"]):
+        f["Pr"] = f["mu"] * f["cp"] / f["k"]
+    nch = c["plates"] - 1
+    l1, l2 = c["f1"]["kgs"] / c["f1"]["rho"] * 60000, c["f2"]["kgs"] / c["f2"]["rho"] * 60000
+    s1, s2 = side(c["f1"], l1, nch // 2), side(c["f2"], l2, nch - nch // 2)
+    U = 1.0 / (1 / s1["h"] + 1 / s2["h"] + HX["t_wall"] / HX["k_wall"])
+    return U, s1["dp"], s2["dp"]
+
+
+def calibrate_to_swep():
+    c = SWEP_CASE
+    HX["k_port"] = 2 * c["dp_port1"] / (c["f1"]["rho"] * c["u_port1"] ** 2)
+    lo, hi = 0.5, 3.0                       # heat transfer: one factor on both film coefficients
+    for _ in range(50):
+        HX["cal_h"] = (lo + hi) / 2
+        lo, hi = (HX["cal_h"], hi) if _swep_eval()[0] < c["U"] else (lo, HX["cal_h"])
+    lo, hi = 0.5, 6.0                       # friction: one factor, fitted to the sum of both sides
+    for _ in range(50):
+        HX["cal_f"] = (lo + hi) / 2
+        _, d1, d2 = _swep_eval()
+        lo, hi = (HX["cal_f"], hi) if d1 + d2 < c["dp1"] + c["dp2"] else (lo, HX["cal_f"])
+    return _swep_eval()
+
+
+SWEP_FIT = calibrate_to_swep()
 
 
 def eff_counterflow(UA, C1, C2):
@@ -149,6 +194,33 @@ def fws_flow_for_setpoint(n_plates, q, tcs_lpm, t_fws_in, t_supply_sp, ua_derate
     return hi
 
 
+# ----------------------------------------------------------------------------
+# Pump curves, H [m] = c0 n^2 + c1 n Q + c2 Q^2, Q in m3/h, n = speed fraction.
+# CME 1-3: read from the Grundfos product datasheet curve for 98394758 (100 %).
+# CME 1-2: read from the Grundfos CM/CME data booklet, CME 1 curve page, -2 stages.
+# Values read by eye from the published charts: +/-0.5 m.  Rev B (published data).
+# ----------------------------------------------------------------------------
+PUMPS = {"CME 1-3": (39.6, -1.47, -2.33), "CME 1-2": (25.6, -1.55, -1.24)}
+PUMP_CAPS = {"CME 1-3": 0.767, "CME 1-2": 0.95}   # caps giving <= 3.5 bar g dead-head warm
+PUMP_SEL = "CME 1-2"
+ETA_W2W = 0.27          # wire-to-water: P2 curve x motor/drive (CME 1-3 sheet: P1 470 W for 149 W hydraulic)
+
+
+def pump_head(q, n, c):
+    return c[0] * n * n + c[1] * n * q + c[2] * q * q
+
+
+def pump_speed_for(q, h, c):
+    a, b, cc = c[0], c[1] * q, c[2] * q * q - h
+    return (-b + math.sqrt(b * b - 4 * a * cc)) / (2 * a)
+
+
+def pump_flow_on_system(n, k_sys, c):
+    """Flow where the pump curve at speed n meets H = k_sys Q^2."""
+    a, b, cc = c[2] - k_sys, c[1] * n, c[0] * n * n
+    return (-b - math.sqrt(b * b - 4 * a * cc)) / (2 * a)
+
+
 def hr(t):
     print("\n" + "=" * 78 + "\n" + t + "\n" + "=" * 78)
 
@@ -169,15 +241,22 @@ def main():
     print(f"Pr PG25 = {PG25['Pr']:.1f}   Pr water = {WATER['Pr']:.1f}")
 
     # ============================================================================
-    hr("2. PLATE-COUNT SCAN (SWEP B25T-class geometry, Martin correlation)")
+    hr("2a. EXCHANGER MODEL CALIBRATED TO A SWEP SSP RATING (B25THx50, EG25/water, 14 kW)")
+    c = SWEP_CASE
+    print(f"Factors: film coefficients x{HX['cal_h']:.2f}, channel friction x{HX['cal_f']:.2f}, port loss K = {HX['k_port']:.2f}")
+    print(f"Fit: U {SWEP_FIT[0]:.0f} W/m2K (SWEP {c['U']:.0f});  dP {SWEP_FIT[1]/1e3:.1f} / {SWEP_FIT[2]/1e3:.2f} kPa "
+          f"(SWEP {c['dp1']/1e3:.1f} / {c['dp2']/1e3:.2f})")
+    print("Before calibration the model gave U 2541 W/m2K and dP 5.3 / 3.4 kPa for this case.")
+
+    hr("2. PLATE-COUNT SCAN (SWEP B25T geometry, Martin correlation calibrated to SWEP)")
     print(f"Dh = {HX['Dh']*1e3:.2f} mm   area/plate = {HX['A_plate']*1e4:.0f} cm2   chevron = {HX['chev_deg']:.0f} deg")
     print(" N   A[m2]  Re_tcs Re_fws  U[W/m2K]  UA[W/K]  UA/UAreq  dP_tcs[kPa] dP_fws[kPa]")
-    for n in (14, 20, 24, 30, 40):
+    for n in (20, 24, 30, 40, 50):
         p = hx_perf(n, TCS_FLOW, FWS_FLOW)
         print(f"{n:3d}  {p['A']:.3f}  {p['tcs']['Re']:5.0f}  {p['fws']['Re']:5.0f}   {p['U']:6.0f}   {p['UA']:6.0f}    {p['UA']/UA_req:4.2f}"
               f"      {p['tcs']['dp']/1e3:5.1f}       {p['fws']['dp']/1e3:5.1f}")
     print("Sensitivity of the chosen size to the ASSUMED chevron angle:")
-    N_SEL = 30
+    N_SEL = HX_PLATES
     for ang in (45.0, 55.0, 60.0, 65.0):
         HX["chev_deg"] = ang
         p = hx_perf(N_SEL, TCS_FLOW, FWS_FLOW)
@@ -185,8 +264,7 @@ def main():
     HX["chev_deg"] = 60.0
     sel = hx_perf(N_SEL, TCS_FLOW, FWS_FLOW)
     print(f"SELECTED: {N_SEL} plates.  Clean UA margin = {(sel['UA']/UA_req-1)*100:.0f} %")
-    print(f"Cross-check, Kumar correlation: UA = {sel['UA_kumar']:.0f} W/K, margin {(sel['UA_kumar']/UA_req-1)*100:.0f} %"
-          f" (Martin is the lower, and is the design value)")
+    print(f"Cross-check, Kumar correlation (uncalibrated): UA = {sel['UA_kumar']:.0f} W/K, margin {(sel['UA_kumar']/UA_req-1)*100:.0f} %")
     print(f"  hold-up volume per side ~ {sel['n_tcs']*HX['ch_vol']*1e3:.2f} L")
 
     # ============================================================================
@@ -238,28 +316,29 @@ def main():
     print(f"  Hydraulic power = {P_hyd:.0f} W")
 
     # ============================================================================
-    hr("5. PUMP: Grundfos CME 1-3 class, variable speed")
-    # Published rated point: 2.0 m3/h at 26.2 m (100 % speed).
-    # ASSUMED shut-off head 31 m -> parabolic curve H = n^2*H0 - k*Q^2.
-    H0, Q_R, H_R = 31.0, 2.0, 26.2
-    k = (H0 - H_R) / Q_R ** 2
+    hr("5. PUMP SELECTION (published Grundfos curves)")
     Qh = V * 3600
-    n_req = math.sqrt((H_req + k * Qh ** 2) / H0)
-    print(f"Curve model: H = n^2*{H0:.0f} - {k:.2f}*Q^2  (Q in m3/h; shut-off head ASSUMED)")
-    print(f"Speed for duty point: {n_req*100:.0f} %")
-    N_CAP = 0.85
-    for n in (n_req, N_CAP, 1.0):
-        hs = n ** 2 * H0
-        print(f"  speed {n*100:3.0f} %: shut-off head {hs:4.1f} m = {hs*PG25['rho']*G/1e5:.2f} bar")
-    P_FILL = 1.0  # bar g cold fill at pump suction
-    P_WARM = 1.15  # bar g static when warm (section 7 predicts ~1.12)
-    p_max = P_WARM + N_CAP ** 2 * H0 * PG25["rho"] * G / 1e5
-    print(f"Max discharge pressure at {N_CAP*100:.0f} % speed cap, dead-headed, warm: {p_max:.2f} bar g  (relief set 4.0 bar g, margin {(4.0-p_max)/4.0*100:.0f} %)")
-    print(f"Flow available at speed cap against the full dirty-filter system curve: {math.sqrt(N_CAP**2*H0/(k + H_req/Qh**2))/0.06:.1f} L/min")
-    ETA = 0.35  # ASSUMED wire-to-water at this small duty
-    print(f"Electrical input at duty (ASSUMED {ETA*100:.0f} % wire-to-water): {P_hyd/ETA:.0f} W -> heat added to coolant <= that")
-    print("Clean-filter, low-resistance IT loop (40 kPa external): speed "
-          f"{math.sqrt(((dp_int-25e3+40e3)/(PG25['rho']*G) + k*Qh**2)/H0)*100:.0f} %")
+    print(f"Duty: {Qh:.2f} m3/h at {H_req:.1f} m (dirty filter, {EXT_DP_AVAIL/1e3:.0f} kPa to the servers)")
+    print(" pump      curve at 100 %                 speed for duty  cap   dead-head at cap  ext. kPa at cap (dirty)  flow at cap")
+    P_WARM = 1.15  # bar g static when warm (section 7)
+    for name, c in PUMPS.items():
+        n_req = pump_speed_for(Qh, H_req, c)
+        n_cap = PUMP_CAPS[name]
+        p_dead = P_WARM + pump_head(0.0, n_cap, c) * PG25["rho"] * G / 1e5
+        h_cap = pump_head(Qh, n_cap, c)
+        ext = h_cap * PG25["rho"] * G - dp_int
+        k_sys = H_req / Qh ** 2
+        q_cap = pump_flow_on_system(n_cap, k_sys, c)
+        print(f" {name}  H={c[0]:.1f}n2{c[1]:+.2f}nQ{c[2]:+.2f}Q2   {n_req*100:5.0f} %     {n_cap*100:3.0f} %   {p_dead:5.2f} bar g      "
+              f"{ext/1e3:6.0f}                 {q_cap/0.06:5.1f} L/min")
+    c = PUMPS[PUMP_SEL]
+    print(f"SELECTED: {PUMP_SEL}, speed cap {PUMP_CAPS[PUMP_SEL]*100:.0f} % "
+          f"(dead-head under 3.5 bar g warm, relief 4.0 bar g; at least 100 kPa to servers with a dirty filter)")
+    print(f"Electrical input at duty ({ETA_W2W*100:.0f} % wire-to-water, from the published P1 curve): "
+          f"{P_hyd/ETA_W2W:.0f} W -> heat added to coolant <= that")
+    k_clean = (dp_int - 25e3 + 70e3) / (PG25["rho"] * G) / Qh ** 2
+    print(f"Speed at 29 L/min with a clean filter and 70 kPa setpoint: "
+          f"{pump_speed_for(29 * 0.06, k_clean * (29 * 0.06) ** 2, c)*100:.0f} %")
 
     # ============================================================================
     hr("6. FACILITY-SIDE PRESSURE REQUIREMENT AND CONTROL VALVE")

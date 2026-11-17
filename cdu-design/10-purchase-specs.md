@@ -8,24 +8,25 @@ Answers to the items marked **(HP-xx)** close the hold points in [07-hold-points
 
 ## RFQ-01 — Circulation pump P-101 (long lead; order first)
 
-Basis of design: Grundfos CME 1-3, stainless steel, built-in variable-speed drive.
+Basis of design: Grundfos CME 1-2 A-R-G-E-AQQE class (316 stainless, EPDM, AQQE seal), built-in variable-speed drive, 1 × 200–240 V 50/60 Hz (supply voltage U). Rev C changed this from the CME 1-3 after checking the published curves.
 
 | Requirement | Value |
 |---|---|
 | Fluid | Inhibited propylene glycol 25 % by volume, 15–50 °C |
-| Duty point | 1.8 m³/h at 15.2 m head (PG25 at 35 °C), reached at 85 % speed or less |
+| Duty point | 1.8 m³/h at 15.6 m head (PG25 at 35 °C), reached at 95 % speed or less |
 | Turndown | Stable down to 0.2 m³/h on a minimum-flow bypass |
 | Materials | 316 stainless wetted parts; EPDM elastomers; SiC/SiC or SiC/carbon mechanical seal; no brass, zinc or aluminium wetted |
 | Pressure rating | At least 10 bar |
-| Drive | Built in; 0–10 V speed input; analogue speed output; fault and running relays; programmable fallback speed on loss of signal |
+| Drive | Built in; 0–10 V speed input; two signal relays (fault, running); programmable fallback speed on loss of signal |
+| Shut-off head at 100 % speed | 27 m or less (keeps dead-head under 3.5 bar g at the 95 % cap) |
 | Supply | 208–240 V single-phase 60 Hz preferred |
 | Approvals | UL or ETL listed motor and drive |
 
-Supplier to state: **(HP-02)** full curve at 100 % speed with shut-off head; curves at 60, 80 and 85 % speed; motor P2 and maximum P1; full-load current; earth leakage current; minimum inlet pressure (NPSHr) at duty; weight; dimensions; lead time; price for two units (one installed, one spare).
+Supplier to state: **(HP-02)** confirmation of the published CME 1-2 curve (shut-off about 25.6 m) for the 60 Hz US product number; curves at 60, 80 and 95 % speed; motor P2 and maximum P1; full-load current; earth leakage current; minimum inlet pressure (NPSHr) at duty; weight; dimensions; lead time; price for two units (one installed, one spare).
 
 ## RFQ-02 — Plate heat exchanger E-101
 
-Basis of design: SWEP B25T × 30 plates, 316L plates, copper brazed.
+Basis of design: SWEP B25T × 40 plates, 316L plates, copper brazed.
 
 | Requirement | Value |
 |---|---|
@@ -49,9 +50,10 @@ Basis of design: ifm SM7000 (0.2–50 L/min, magnetic-inductive).
 |---|---|
 | Range | 0.2–50 L/min |
 | Accuracy | ±(0.8 % of reading + 0.5 % of full scale) or better |
-| Fluids | PG25 and treated water |
+| Fluids | PG25 and treated water; magnetic meters need at least 20 µS/cm (coolant supplier to confirm for the chosen PG25). If not met, quote ultrasonic meters (ifm SU7000 class). |
 | Output | 4–20 mA plus a switching output |
-| Pressure rating | At least 16 bar |
+| Pressure rating | At least 16 bar (SM7000: 16 bar) |
+| Fluid temperature | At least −10 to 70 °C (SM7000) |
 | Connection | 1 in. or ¾ in. thread; M12 electrical |
 
 Supplier to state: **(HP-04)** pressure drop at 30 L/min in PG25 and in water; minimum fluid conductivity, with confirmation that PG25 meets it; response time; price; lead time.
@@ -70,7 +72,7 @@ Supplier to state: **(HP-04)** clean and dirty pressure drop at 30 L/min PG25; r
 
 | Item | Requirement |
 |---|---|
-| TK-101 | 8 L diaphragm tank, EPDM or butyl diaphragm, precharge 0.8 bar g, at least 6 bar, stainless or epoxy-lined steel, ¾ in. connection. ASME stamped option to be quoted (HP-07). |
+| TK-101 | 7.6–8 L (2 US gal) diaphragm tank, EPDM or butyl diaphragm, precharge 0.8 bar g, at least 6 bar, ¾ in. connection. **ASME Section VIII Division 1 stamped and National Board registered (required, D-33).** |
 | PSV-101 | ½ in. relief valve, 316 body, EPDM seat, set 4.0 bar g, capacity at least 30 L/min PG25 at 10 % overpressure, threaded outlet |
 | PSV-201 | ½ in. thermal relief valve for the facility side, set at the facility design pressure (10 bar g assumed) |
 | AV-101 | Automatic float air vent, brass-free (stainless or engineering polymer), at least 10 bar, with an isolation valve |

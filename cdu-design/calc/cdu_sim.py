@@ -42,7 +42,7 @@ DT = 0.05
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "sim")
 
 # ---------------------------------------------------------------- exchanger
-N_PL, N_HX = 30, 10
+N_PL, N_HX = cc.HX_PLATES, 10
 _p0 = cc.hx_perf(N_PL, 30.0, 24.0)
 HX_A = _p0["A"]
 FOUL = 0.80
@@ -71,8 +71,8 @@ K_METER = k_of(10e3, 30.0)
 K_PIPE = k_of(6.4e3, 30.0)
 K_BYP = k_of(70e3, 3.0)
 K_BRANCH = k_of(70e3, 13.0)         # one 4U GPU server branch: 13 L/min at 70 kPa
-H0, KQ = 31.0, 1.20                 # pump curve, m and m/(m3/h)^2 (shut-off assumed)
-ETA_PUMP = 0.35
+PUMP_C = cc.PUMPS[cc.PUMP_SEL]      # published curve, see cdu_calc.py
+ETA_PUMP = cc.ETA_W2W
 
 # ---------------------------------------------------------------- tank
 V_TANK, P_PRE_ABS, VTW_FILL, T_FILL, BETA = 8.0, 0.8 + 1.013, 0.79, 15.0, 4.5e-4
@@ -133,10 +133,11 @@ class Plant:
             k_ext = K_BRANCH / self.n_servers ** 2
             c += 1.0 / math.sqrt(k_ext)
         k_eq = 1.0 / c ** 2
-        qh = self.speed * math.sqrt(RT * G * H0 / (RT * G * KQ + (k_int + k_eq) / 3600.0 ** 2))
+        k_sys = (k_int + k_eq) / (RT * G) / 3600.0 ** 2       # m per (m3/h)^2
+        qh = cc.pump_flow_on_system(self.speed, k_sys, PUMP_C) if self.speed > 1e-4 else 0.0
         Q = qh / 3600.0
         self.dp_eq = k_eq * Q * Q
-        self.dp_pump = RT * G * (self.speed ** 2 * H0 - KQ * qh * qh)
+        self.dp_pump = RT * G * cc.pump_head(qh, self.speed, PUMP_C)
         self.q = Q / LPM
         self.q_ext = math.sqrt(self.dp_eq / k_ext) / LPM if self.n_servers > 0 else 0.0
         self.q_byp = self.q - self.q_ext

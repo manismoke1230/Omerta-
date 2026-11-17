@@ -1,4 +1,4 @@
-# 06 — Bill of materials and cost estimate (Rev B)
+# 06 — Bill of materials and cost estimate (Rev C)
 
 **These are my engineering estimates in US dollars, not quotations.** Expect ±40 % until quotes arrive. The only price I found published is the ifm SM7000 flow meter, listed by RS at about €929 including tax.
 
@@ -6,11 +6,11 @@
 
 | Group | Items | Estimate |
 |---|---|---:|
-| Pump | Grundfos CME 1-3, 316 stainless, with drive | $3,000 |
-| Spare pump | Same, kept on the shelf | $3,000 |
-| Heat exchanger | SWEP B25T × 30 or equal, with insulation kit | $900 |
+| Pump | Grundfos CME 1-2, 316 stainless, with drive | $2,900 |
+| Spare pump | Same, kept on the shelf | $2,900 |
+| Heat exchanger | SWEP B25T × 40 or equal, with insulation kit | $1,050 |
 | Filter and strainer | 316 housing, two 50 µm cartridges, Y-strainer | $900 |
-| Expansion, relief, venting | 8 L tank, two relief valves, air vent | $600 |
+| Expansion, relief, venting | 2 gal ASME-stamped tank, two relief valves, air vent | $1,000 |
 | Manual valves | Ball valves, balancing valve, sample and drain valves | $1,200 |
 | Actuated valves | Control valve with actuator; fail-closed shut-off valve | $900 |
 | Flow meters | Two magnetic-inductive meters | $2,100 |
@@ -21,8 +21,8 @@
 | Cabinet | Frame, panels, door, stainless drip tray and shield, castors; 1200 mm high | $2,900 |
 | Hose kit | Two 3 m hoses, bay manifold, dry-break couplings | $1,800 |
 | Coolant | 40 L of PG25 and sample kits | $400 |
-| **Parts total** | | **$28,100** |
-| Without spare pump | | $25,100 |
+| **Parts total** | | **$28,450** |
+| Without spare pump | | $25,550 |
 
 ## Build and approval
 
@@ -40,9 +40,9 @@
 
 | | Estimate |
 |---|---:|
-| Parts with spare pump | $28,100 |
+| Parts with spare pump | $28,450 |
 | Build and approval | $38,000 |
-| **Prototype total** | **about $66,000** |
+| **Prototype total** | **about $66,500** |
 | Range at ±40 % on parts and ±25 % on labour | $50,000–80,000 |
 
 Design engineering hours are not included.

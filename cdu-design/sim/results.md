@@ -8,10 +8,10 @@ Model and assumptions are described at the top of `calc/cdu_sim.py`. These are p
 
 | Result | Value |
 |---|---|
-| overshoot_up_K | 0.93 |
-| settle_up_s | 111.00 |
-| undershoot_down_K | 0.96 |
-| settle_down_s | 144.00 |
+| overshoot_up_K | 0.70 |
+| settle_up_s | 60.00 |
+| undershoot_down_K | 0.71 |
+| settle_down_s | 94.00 |
 | trips | [] |
 
 ## S2: Light load on cold facility water: 2 kW, 18 C, 30 min (tests TT-2, TT-4)
@@ -20,12 +20,12 @@ Model and assumptions are described at the top of `calc/cdu_sim.py`. These are p
 
 | Result | Value |
 |---|---|
-| supply_mean_C | 31.99 |
-| supply_pk_pk_K | 0.14 |
-| valve_pk_pk_pct | 0.32 |
-| valve_travel_pct_per_h | 1.48 |
-| valve_mean_pct | 19.38 |
-| fws_flow_mean_lpm | 2.04 |
+| supply_mean_C | 32.00 |
+| supply_pk_pk_K | 0.15 |
+| valve_pk_pk_pct | 0.33 |
+| valve_travel_pct_per_h | 1.55 |
+| valve_mean_pct | 19.83 |
+| fws_flow_mean_lpm | 2.08 |
 | trips | [] |
 
 ## S3: Rating point: 10 kW, facility water 27 C (test TT-1)
@@ -34,18 +34,18 @@ Model and assumptions are described at the top of `calc/cdu_sim.py`. These are p
 
 | Result | Value |
 |---|---|
-| supply_mean_C | 32.03 |
-| supply_pk_pk_K | 0.10 |
-| valve_pk_pk_pct | 0.33 |
-| valve_travel_pct_per_h | 5.60 |
-| valve_mean_pct | 82.19 |
-| fws_flow_mean_lpm | 19.59 |
+| supply_mean_C | 32.02 |
+| supply_pk_pk_K | 0.13 |
+| valve_pk_pk_pct | 0.34 |
+| valve_travel_pct_per_h | 5.90 |
+| valve_mean_pct | 76.35 |
+| fws_flow_mean_lpm | 16.46 |
 | heat_tcs_kW | 10.00 |
-| heat_fws_kW | 10.14 |
-| pump_heat_W | 132.66 |
+| heat_fws_kW | 10.18 |
+| pump_heat_W | 179.60 |
 | flow_lpm | 29.00 |
-| pump_speed_pct | 65.20 |
-| discharge_bar_g | 2.02 |
+| pump_speed_pct | 78.66 |
+| discharge_bar_g | 2.06 |
 | static_bar_g | 1.05 |
 | trips | [] |
 
@@ -55,8 +55,8 @@ Model and assumptions are described at the top of `calc/cdu_sim.py`. These are p
 
 | Result | Value |
 |---|---|
-| max_dev_K | 0.81 |
-| settle_s | 33.00 |
+| max_dev_K | 0.80 |
+| settle_s | 30.00 |
 | trips | [] |
 
 ## S5: Facility pressure step 50 to 90 kPa at 10 kW
@@ -65,7 +65,7 @@ Model and assumptions are described at the top of `calc/cdu_sim.py`. These are p
 
 | Result | Value |
 |---|---|
-| max_dev_K | 0.34 |
+| max_dev_K | 0.39 |
 | settle_s | 0.00 |
 | trips | [] |
 
@@ -78,12 +78,12 @@ Model and assumptions are described at the top of `calc/cdu_sim.py`. These are p
 | fws_lost_alarm_after_s | 10.30 |
 | first_trip | FWS_LOST |
 | first_trip_after_s | 20.20 |
-| supply_at_trip_C | 35.65 |
-| peak_supply_C | 37.39 |
-| peak_server_outlet_C | 37.97 |
+| supply_at_trip_C | 35.68 |
+| peak_supply_C | 37.55 |
+| peak_server_outlet_C | 37.98 |
 | trips | ['FWS_LOST'] |
 
-Events: 70.3 s alarm FWS_LOST_W; 80.2 s trip FWS_LOST; 80.2 s permit opened; 137.0 s alarm HIGH_TEMP_W
+Events: 70.3 s alarm FWS_LOST_W; 80.2 s trip FWS_LOST; 80.2 s permit opened; 136.9 s alarm HIGH_TEMP_W
 
 ## S7: Pump power lost at 10 kW (test FT-4)
 
@@ -106,9 +106,9 @@ Events: 34.6 s trip LOW_FLOW; 34.6 s permit opened; 40.8 s alarm LOW_FLOW_W
 |---|---|
 | remaining_server_flow_before | 13.00 |
 | remaining_server_flow_after | 13.00 |
-| pump_speed_after_pct | 53.41 |
-| max_discharge_bar_g | 2.02 |
-| max_dev_K | 0.98 |
+| pump_speed_after_pct | 62.30 |
+| max_discharge_bar_g | 2.06 |
+| max_dev_K | 0.94 |
 | trips | [] |
 
 ## S9: Room dew point rises 15 to 30 C at 5 kW (test TT-8)
@@ -118,11 +118,11 @@ Events: 34.6 s trip LOW_FLOW; 34.6 s permit opened; 40.8 s alarm LOW_FLOW_W
 | Result | Value |
 |---|---|
 | setpoint_after_C | 33.00 |
-| supply_end_C | 33.01 |
+| supply_end_C | 33.04 |
 | dew_warning | True |
 | trips | [] |
 
-Events: 60.1 s alarm DEW_W; 60.5 s alarm DEW_W; 61.5 s alarm DEW_W; 62.0 s alarm DEW_W; 62.7 s alarm DEW_W; 63.5 s alarm DEW_W; 66.7 s alarm DEW_W; 67.8 s alarm DEW_W; 68.2 s alarm DEW_W; 68.5 s alarm DEW_W; 68.8 s alarm DEW_W; 69.0 s alarm DEW_W
+Events: 60.1 s alarm DEW_W; 61.5 s alarm DEW_W; 62.0 s alarm DEW_W; 66.7 s alarm DEW_W; 68.1 s alarm DEW_W; 68.4 s alarm DEW_W; 68.8 s alarm DEW_W; 69.5 s alarm DEW_W; 69.8 s alarm DEW_W; 70.2 s alarm DEW_W
 
 ## S10: Slow coolant leak 0.1 L/min at 5 kW (test FT-6)
 
@@ -146,8 +146,8 @@ Events: 247.2 s alarm INVENTORY_W; 443.6 s trip INVENTORY; 443.6 s permit opened
 |---|---|
 | server_flow_start | 26.00 |
 | server_flow_end | 26.01 |
-| pump_speed_end_pct | 70.72 |
-| max_dev_K | 0.09 |
+| pump_speed_end_pct | 84.61 |
+| max_dev_K | 0.08 |
 | filter_alarm_at_s | 420.50 |
 | trips | [] |
 
@@ -159,8 +159,8 @@ Events: 420.5 s alarm FILTER_W
 
 | Result | Value |
 |---|---|
-| peak_supply_C | 35.50 |
-| max_dev_K | 3.50 |
+| peak_supply_C | 35.51 |
+| max_dev_K | 3.51 |
 | trips | [] |
 
 Events: 70.3 s alarm FWS_LOST_W
@@ -171,10 +171,10 @@ Events: 70.3 s alarm FWS_LOST_W
 
 | Result | Value |
 |---|---|
-| permit_closed_at_s | 16.00 |
-| peak_supply_C | 32.63 |
-| supply_end_C | 32.05 |
+| permit_closed_at_s | 18.00 |
+| peak_supply_C | 32.38 |
+| supply_end_C | 32.04 |
 | trips | [] |
 
-Events: -0.0 s alarm DEW_W; 26.1 s alarm DEW_W; 59.6 s alarm DEW_W
+Events: -0.0 s alarm DEW_W; 28.4 s alarm DEW_W
 

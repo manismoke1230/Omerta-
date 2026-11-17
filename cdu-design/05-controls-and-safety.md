@@ -1,4 +1,4 @@
-# 05 — Controls and safety (Rev B)
+# 05 — Controls and safety (Rev C)
 
 The control logic is defined by executable code, not only by this description:
 
@@ -38,7 +38,7 @@ PI control of the differential pressure across the server loop and bypass, measu
 | Item | Value |
 |---|---|
 | Setpoint | 70 kPa, adjustable 30–100 kPa |
-| Speed limits | 30–85 % |
+| Speed limits | 30–95 % (95 % cap keeps the CME 1-2 dead-head at 3.48 bar g) |
 | Minimum-flow override | A second PI on flow is max-selected with the pressure loop, so speed rises if flow falls below the configured minimum |
 | Tuning | Pressure loop 0.4 %/kPa, 4 s; flow loop 2 %/(L/min), 4 s |
 | Anti-windup | Both loops track the selected output |
@@ -85,7 +85,7 @@ The supply high-temperature trip is a setting, **server maximum inlet temperatur
 
 ### Why the facility-loss trip exists
 
-Without it, the supply trip at 38 °C fires about 58 s after facility water is lost at 10 kW. The loop then mixes toward its stored mean temperature, and supply peaks at 41.4 °C. With a 20 s confirmed facility-loss trip, load is shed at 35.6 °C supply and the peak is 37.4 °C. A 15 s interruption rides through with no trip and a peak of 35.5 °C (simulations S6, S13).
+Without it, the supply trip at 38 °C fires about 58 s after facility water is lost at 10 kW. The loop then mixes toward its stored mean temperature, and supply peaks at 41.4 °C. With a 20 s confirmed facility-loss trip, load is shed at 35.7 °C supply and the peak is 37.6 °C. A 15 s interruption rides through with no trip and a peak of 35.5 °C (simulations S6, S13).
 
 ### Why inventory monitoring replaced the low-pressure warning
 
@@ -102,7 +102,7 @@ Severity (S) and likelihood (L) are each scored from 1 (low) to 5 (high).
 | # | Failure | Effect | Detected by | Protection | S | L |
 |---|---|---|---|---|---:|---:|
 | 1 | Pump stops | No flow to cold plates | FT-101, drive fault | Low-flow trip within 5 s (simulated 4.6 s); spare pump | 4 | 2 |
-| 2 | Facility water lost | Loop warms about 5 K/min at 10 kW | PT-201/202, FT-201 | Facility-loss trip at 20 s; peak supply 37.4 °C | 3 | 3 |
+| 2 | Facility water lost | Loop warms about 5 K/min at 10 kW | PT-201/202, FT-201 | Facility-loss trip at 20 s; peak supply 37.6 °C | 3 | 3 |
 | 3 | Hose or disconnect leak outside cabinet | Coolant on floor or hardware | LDS-302, inventory deficit | Warning at 0.25 L, trip at 0.6 L; dry-break couplings; external tray | 4 | 3 |
 | 4 | Leak inside cabinet, server loop | Coolant in tray | LDS-301, inventory | Tray holds 2.9× cabinet volume; pump stops | 2 | 2 |
 | 5 | Leak inside cabinet, facility side | Unlimited water supply | LDS-301 | Fail-closed shut-off XV-201 | 4 | 2 |
@@ -110,7 +110,7 @@ Severity (S) and likelihood (L) are each scored from 1 (low) to 5 (high).
 | 7 | Control valve sticks closed | Supply rises | TT-101, position feedback | High-temperature trip | 3 | 2 |
 | 8 | Control valve sticks open on cold water | Supply falls toward dew point | TT-101, AT-301 | Dew-point warning; insulation | 2 | 2 |
 | 9 | Filter blocks | Pump speeds up to hold pressure | PDT-101 | Warning at 20 kPa; flow held to 30 kPa (S11) | 2 | 3 |
-| 10 | Pump dead-headed, all servers unplugged | Pressure rise | PT-102 | Bypass V-105; 85 % speed cap (3.4 bar g worst case); relief valve | 2 | 4 |
+| 10 | Pump dead-headed, all servers unplugged | Pressure rise | PT-102 | Bypass V-105; 95 % speed cap (3.48 bar g worst case); relief valve | 2 | 4 |
 | 11 | Liquid trapped and heated between closed valves | Overpressure | — | Relief on the server loop; thermal relief on the facility side | 3 | 2 |
 | 12 | Temperature sensor drifts | Wrong supply temperature | Two-sided heat balance mismatch | Out-of-range trip; annual calibration | 3 | 2 |
 | 13 | Air after a server swap | Noisy flow, poor cooling | Flow fluctuation | Automatic vent; fill-and-vent mode | 2 | 4 |
@@ -123,8 +123,8 @@ Severity (S) and likelihood (L) are each scored from 1 (low) to 5 (high).
 | Level | Value |
 |---|---:|
 | Cold fill | 1.0 bar g |
-| Normal running, pump discharge (simulated at 10 kW) | 2.0 bar g |
-| Worst case, dead-headed at the speed cap | 3.4 bar g |
+| Normal running, pump discharge (simulated at 10 kW) | 2.06 bar g |
+| Worst case, dead-headed at the 95 % speed cap (published CME 1-2 curve) | 3.48 bar g |
 | High-pressure trip | 3.8 bar g |
 | Relief valve | 4.0 bar g |
 | Hydrostatic test | 6.0 bar g, with the relief valve removed and its port plugged, and the tank isolated |

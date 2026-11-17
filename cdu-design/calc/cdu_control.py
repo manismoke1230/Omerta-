@@ -17,7 +17,7 @@ DEFAULTS = dict(
     SP_T_MIN=25.0, SP_T_MAX=40.0,
     DP_SP=70.0,           # supply-return differential pressure setpoint, kPa
     # limits
-    SPEED_MIN=30.0, SPEED_MAX=85.0,   # pump drive, % (85 % cap: decision D-11)
+    SPEED_MIN=30.0, SPEED_MAX=95.0,   # pump drive, % (CME 1-2: 95 % cap keeps dead-head <= 3.5 bar g, D-11)
     VALVE_MIN_RUN=5.0,                # control valve minimum while running, %
     VALVE_START=30.0,                 # preposition at start, %
     # configuration set by the operator for the connected servers
@@ -339,7 +339,7 @@ class Controller:
 # Facility-circuit model used by the feed-forward (must match the plant data).
 CV_MAX = 4.7          # control valve
 RANGEABILITY = 50.0   # equal-percentage characteristic
-K_FIXED_KPA = 24.2    # facility circuit excluding control valve, kPa at 24 L/min
+K_FIXED_KPA = 26.2    # facility circuit excluding control valve, kPa at 24 L/min (40-plate HX, calibrated)
 
 
 def valve_cv(pos_pct):

@@ -15,11 +15,11 @@
 
 | Load | Running | Maximum | Notes |
 |---|---:|---:|---|
-| Pump motor and built-in drive | 220 W | 1,000 W | Running value from the simulation at 10 kW (76 W hydraulic at 35 % wire-to-water); maximum is the assumed motor rating, confirm at HP-02 |
+| Pump motor and built-in drive (CME 1-2, 0.55 kW, 3.45 A at 200 V) | 290 W | 700 W | Running: 79 W hydraulic at 27 % wire-to-water. Maximum: published rated current at 200 V. |
 | 24 V DC system (PLC, HMI, transmitters, flow meters, actuators, relays) | 45 W | 70 W | From the 24 V budget below |
 | 24 V power supply losses | 8 W | 12 W | 90 % efficiency |
-| **Total** | **about 275 W** | **about 1,080 W** | 5.2 A at 208 V maximum |
-| Heat released into the room | about 200 W | | Motor and drive losses plus controls; the hydraulic power ends up in the coolant |
+| **Total** | **about 345 W** | **about 780 W** | 3.8 A at 208 V maximum |
+| Heat released into the room | about 265 W | | Motor and drive losses plus controls; hydraulic power and pump friction end up in the coolant |
 
 ## 24 V DC budget
 

@@ -60,7 +60,7 @@ VAR_GLOBAL RETAIN PERSISTENT
     P_SP_T : REAL := 32.0;          P_DEW_MARGIN : REAL := 3.0;
     P_SP_T_MIN : REAL := 25.0;      P_SP_T_MAX : REAL := 40.0;
     P_DP_SP : REAL := 70.0;
-    P_SPEED_MIN : REAL := 30.0;     P_SPEED_MAX : REAL := 85.0;   (* 85 % cap: decision D-11 *)
+    P_SPEED_MIN : REAL := 30.0;     P_SPEED_MAX : REAL := 95.0;   (* CME 1-2: dead-head <= 3.5 bar g, decision D-11 *)
     P_VALVE_MIN_RUN : REAL := 5.0;  P_VALVE_START : REAL := 30.0;
     P_F_EXP : REAL := 29.0;         P_F_MIN : REAL := 27.0;       (* set for the connected servers *)
     P_T_SERVER_MAX : REAL := 40.0;
@@ -77,7 +77,7 @@ VAR_GLOBAL RETAIN PERSISTENT
     P_FL_KP : REAL := 2.0;          P_FL_TI : REAL := 4.0;
     (* facility circuit, for the feed-forward *)
     P_CV_MAX : REAL := 4.7;         P_RANGEABILITY : REAL := 50.0;
-    P_K_FIXED_KPA : REAL := 24.2;   (* facility branch drop excluding TCV, kPa at 24 L/min *)
+    P_K_FIXED_KPA : REAL := 26.2;   (* facility branch drop excluding TCV, kPa at 24 L/min *)
 END_VAR
 
 (* =============================================================================

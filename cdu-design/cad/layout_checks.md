@@ -10,8 +10,8 @@ Overall result: **PASS**
 | Routine service items within 600 mm of the door | PASS | all routine items reachable: P-101, F-101, STR-201, V-ISO, V-FILL, SP-101 |
 | All wetted parts below 800 mm; panel above 840 mm behind shield | PASS | segregated |
 | Drip tray holds at least 2x the cabinet coolant (5.1 L) | PASS | gross 15.0 L, displaced by feet/stands 0.0 L, net 15.0 L = 2.9x |
-| Stable at 10 deg tilt in every direction, door open (IEC 61010-1 cl. 7.3) | PASS | mass 151 kg; CG x 297, y 382, z 517 mm; tip angles left 26 deg, right 27 deg, front 33 deg, rear 36 deg; forward with door open 30 deg |
-| Castor load (4 castors, worst one carries 35 %) | PASS | 519 N per castor; specify castors rated >= 600 N each |
+| Stable at 10 deg tilt in every direction, door open (IEC 61010-1 cl. 7.3) | PASS | mass 151 kg; CG x 302, y 390, z 519 mm; tip angles left 27 deg, right 26 deg, front 34 deg, rear 35 deg; forward with door open 31 deg |
+| Castor load (4 castors, worst one carries 35 %) | PASS | 518 N per castor; specify castors rated >= 600 N each |
 
 ## Pipe corridors reserved (to be routed in detailed CAD)
 

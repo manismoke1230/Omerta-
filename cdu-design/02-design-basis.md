@@ -1,13 +1,15 @@
-# 02 — Design basis and interfaces (Rev B)
+# 02 — Design basis and interfaces (Rev C)
 
 ## Site: New Albany, Ohio (reference)
 
 | Item | Value | Source and status |
 |---|---|---|
-| Winter design dry-bulb (99.6 %) | −17 °C (1.4 °F) | ASHRAE-derived city table for Columbus |
-| Summer design dry-bulb (0.4 %) | about 32 °C | My figure for Columbus; confirm from the ASHRAE station table (HP-06) |
-| Peak summer dew point | about 22–23 °C | Same |
-| Design room dew point | **23 °C** | Used for all condensation checks |
+| ASHRAE station | Columbus John Glenn, WMO 724280, elevation 249 m, ASHRAE 2021 (data period 1994–2019) | ashrae-meteo.info |
+| Winter design dry-bulb (99.6 %) | −15.3 °C; extreme annual mean minimum −18.3 °C | ASHRAE 2021 |
+| Summer design dry-bulb (0.4 %) | 32.8 °C with mean coincident wet-bulb 23.0 °C; extreme annual mean maximum 34.6 °C | ASHRAE 2021 |
+| Evaporation wet-bulb (0.4 %) | 24.7 °C, which sets the warmest cooling-tower water (about 28–30 °C supply) | ASHRAE 2021 |
+| Dehumidification dew point (0.4 %) | 23.1 °C, humidity ratio 18.4 g/kg | ASHRAE 2021 |
+| Design room dew point | **23 °C** | Confirmed by the ASHRAE 0.4 % value; used for all condensation checks |
 | Campus cooling | Mix of liquid-to-air sidecars in older buildings and facility-water CDUs in newer ones | Public reporting on Meta's Prometheus campus |
 | Building type | May be a conventional hall, a modular unit or a tent structure | Public reporting |
 
@@ -53,7 +55,7 @@ Central Ohio is humid in summer and well below freezing in winter. The design th
 | **Load shedding** | **When the permit opens, server load must fall below 20 % within 10 s** (hold point HP-09) |
 | Drain | Not required. Relief and drain discharge to the internal tray. |
 | Service clearance | 900 mm in front; none needed at sides or rear after installation |
-| Footprint and mass | 600 × 800 mm, 1200 mm high; about 151 kg filled |
+| Footprint and mass | 600 × 800 mm, 1200 mm high; about 149 kg filled |
 
 ## Applicable codes and approvals
 
@@ -61,7 +63,7 @@ Central Ohio is humid in summer and well below freezing in winter. The design th
 |---|---|---|
 | Electrical | NEC (NFPA 70); UL 508A panel; NRTL field evaluation | Built into D-22 and the cost estimate |
 | Mechanical | Ohio Mechanical Code for the facility tie-in | Site contractor pulls the permit |
-| Pressure | Expansion tank is 8 L at under 4 bar; expected to fall below Ohio's pressure-vessel thresholds | Confirm with the Ohio Division of Industrial Compliance (HP-07) |
+| Pressure | Ohio boiler and pressure vessel law covers any pressure vessel (ORC 4104.01(G)); no exemption fits this unit (ORC 4104.04); new vessels to the referenced standard (OAC 4101:4-4-01) | Expansion tank ASME VIII stamped (D-33). Confirm registration and inspection with the Ohio Division of Industrial Compliance (HP-07). |
 | Piping | ASME B31.9 practice for the facility branch | Applied in the test plan |
 | Owner | Site design standards, approved coolant list, controls network rules | Site owner review at design review |
 
