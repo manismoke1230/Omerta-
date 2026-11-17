@@ -61,6 +61,7 @@ All 18 logic tests and all 8 layout checks still pass, and every simulation was 
 | [09-electrical.md](09-electrical.md) | Electrical design |
 | [10-purchase-specs.md](10-purchase-specs.md) | Nine requests for quotation |
 | [sim/results.md](sim/results.md) | Simulation results and charts for 13 scenarios |
+| [visuals/](visuals/) | Realistic 3D scene of the unit in a test bay (`cdu10-scene.html`, open in a browser) and five rendered views |
 | [cad/](cad/) | Layout model (`.obj`), drawing (`cdu10_views.svg`), 3D viewer (`viewer.html`), checks (`layout_checks.md`) |
 | [plc/](plc/) | PLC program and Modbus map |
 | [calc/](calc/) | All scripts: sizing, controller, simulation, tests, P&ID generator |
