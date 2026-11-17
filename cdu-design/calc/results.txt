@@ -1,0 +1,117 @@
+
+==============================================================================
+1. RATING-POINT HEAT BALANCE
+==============================================================================
+TCS  PG25  30 L/min  C=1999 W/K  dT=5.00 K  37.00 -> 32.00 C
+FWS  water 24 L/min  C=1665 W/K  dT=6.01 K  27.00 -> 33.01 C
+LMTD = 4.48 K   required UA (clean, no margin) = 2233 W/K
+Pr PG25 = 14.1   Pr water = 5.4
+
+==============================================================================
+2. PLATE-COUNT SCAN (SWEP B25T-class geometry, Martin correlation)
+==============================================================================
+Dh = 3.42 mm   area/plate = 600 cm2   chevron = 60 deg
+ N   A[m2]  Re_tcs Re_fws  U[W/m2K]  UA[W/K]  UA/UAreq  dP_tcs[kPa] dP_fws[kPa]
+ 14  0.720    805   1136     3834     2759    1.24       24.2        10.5
+ 20  1.079    537    795     3016     3256    1.46       12.2         5.8
+ 24  1.319    439    663     2680     3535    1.58        8.9         4.3
+ 30  1.679    345    530     2327     3907    1.75        6.3         3.1
+ 40  2.279    254    398     1953     4451    1.99        4.2         2.1
+Sensitivity of the chosen size to the ASSUMED chevron angle:
+  chevron 45 deg: UA/UAreq = 1.38   dP_tcs =  3.3 kPa   dP_fws =  1.7 kPa
+  chevron 55 deg: UA/UAreq = 1.62   dP_tcs =  4.9 kPa   dP_fws =  2.4 kPa
+  chevron 60 deg: UA/UAreq = 1.75   dP_tcs =  6.3 kPa   dP_fws =  3.1 kPa
+  chevron 65 deg: UA/UAreq = 1.88   dP_tcs =  8.3 kPa   dP_fws =  4.1 kPa
+SELECTED: 30 plates.  Clean UA margin = 75 %
+  hold-up volume per side ~ 1.61 L
+
+==============================================================================
+3. OFF-DESIGN THERMAL PERFORMANCE (selected exchanger, UA derated 20 % for fouling)
+==============================================================================
+Rating check, fouled: 10 kW, FWS 27 C / 24 L/min -> TCS supply 30.7 C (approach 3.7 K)
+
+Lowest achievable TCS supply at full facility flow (24 L/min), fouled:
+ load[kW]  FWS_in[C]  TCS_supply[C]  TCS_return[C]  approach[K]
+      5        18         19.9           22.4          1.9
+      5        27         28.9           31.4          1.9
+      5        32         33.9           36.4          1.9
+     10        18         21.7           26.7          3.7
+     10        27         30.7           35.7          3.7
+     10        32         35.7           40.7          3.7
+     12        18         22.5           28.5          4.5
+     12        27         31.5           37.5          4.5
+     12        32         36.5           42.5          4.5
+
+Facility flow the control valve must pass to hold a 32 C supply setpoint, fouled:
+ load[kW]  FWS_in[C]  FWS_flow[L/min]  FWS_out[C]
+      2        18            1.9           33.0
+      2        22            2.6           33.0
+      2        27            4.8           33.0
+      5        18            4.4           34.4
+      5        22            5.9           34.3
+      5        27           10.4           33.9
+     10        18            7.9           36.3
+     10        22           10.4           35.8
+     10        27           18.6           34.8
+
+Reduced TCS flow case (15 L/min, e.g. GB200-class trays at ~1.5 L/min/kW), 10 kW, FWS 27 C:
+   TCS supply 29.4 C, return 39.4 C
+
+==============================================================================
+4. TCS HYDRAULIC BUDGET AT 30 L/min PG25
+==============================================================================
+  Plate exchanger, TCS side (calc)                           6.3 kPa
+  Filter 50 um, at dirty-change limit (ASSUMED)             30.0 kPa
+  Flow meter (ASSUMED)                                      10.0 kPa
+  Internal piping/valves, v=0.90 m/s (calc, ASSUMED K)       6.4 kPa
+  Internal total                                            52.7 kPa
+  External allowance to IT loop (requirement)              100.0 kPa
+  Pump duty                                                152.7 kPa = 15.1 m at 1.80 m3/h
+  Hydraulic power = 76 W
+
+==============================================================================
+5. PUMP: Grundfos CME 1-3 class, variable speed
+==============================================================================
+Curve model: H = n^2*31 - 1.20*Q^2  (Q in m3/h; shut-off head ASSUMED)
+Speed for duty point: 78 %
+  speed  78 %: shut-off head 19.0 m = 1.92 bar
+  speed  85 %: shut-off head 22.4 m = 2.26 bar
+  speed 100 %: shut-off head 31.0 m = 3.13 bar
+Max discharge pressure at 85 % speed cap, dead-headed, warm: 3.41 bar g  (relief set 4.0 bar g, margin 15 %)
+Flow available at speed cap against the full dirty-filter system curve: 32.5 L/min
+Electrical input at duty (ASSUMED 35 % wire-to-water): 218 W -> heat added to coolant <= that
+Clean-filter, low-resistance IT loop (40 kPa external): speed 58 %
+
+==============================================================================
+6. FACILITY-SIDE PRESSURE REQUIREMENT AND CONTROL VALVE
+==============================================================================
+  Plate exchanger, FWS side (calc)                           3.1 kPa
+  Y-strainer, part-loaded (ASSUMED)                          8.0 kPa
+  Flow meter (ASSUMED)                                       7.0 kPa
+  Piping, isolation and shut-off valves (ASSUMED)            6.0 kPa
+  Control valve Cv 4.7 fully open (calc)                    12.5 kPa
+  Required facility supply-return dP at 24 L/min            36.6 kPa
+  Valve authority = 0.34
+
+==============================================================================
+7. EXPANSION TANK
+==============================================================================
+System volume allowance 25 L, expansion 15->50 C = 0.39 L
+8 L tank, precharge 0.8 bar g: holds 0.79 L at 1.0 bar g fill, 2.23 L at 1.5 bar g
+Usable acceptance between fill and 1.5 bar g = 1.43 L  (need 0.39 L)
+Predicted static pressure when fully warm = 1.12 bar g
+Static pressure after losing 0.5 L of coolant (cold) = 0.87 bar g -> low-pressure alarm 0.7, trip 0.5 bar g
+
+==============================================================================
+8. LOSS-OF-COOLING TRANSIENT (lumped estimate)
+==============================================================================
+Load 10 kW, pump running, facility flow lost: loop warms 5.2 K/min -> 32 C to 40 C in 91 s, to 45 C in 149 s
+Load 5 kW, pump running, facility flow lost: loop warms 2.6 K/min -> 32 C to 40 C in 183 s, to 45 C in 297 s
+Pump lost at full load: cold plates see no flow; server self-protection governs (seconds).
+=> hardwired 'trip IT load' output on low flow; measured values replace these at test FT-3/FT-4.
+
+==============================================================================
+9. HEAT-BALANCE MEASUREMENT UNCERTAINTY AT RATING
+==============================================================================
+TCS flow uncertainty +/-0.49 L/min (1.6 %), dT +/-0.1 K on 5.0 K (2.0 %)
+Combined heat-balance uncertainty ~ +/-2.8 % (root-sum-square)
