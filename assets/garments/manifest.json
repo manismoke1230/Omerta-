@@ -1,0 +1,42 @@
+{
+  "raglan_black": {
+    "file": "raglan_black.jpg",
+    "original": "IMG_0715.jpeg",
+    "matte": {"trim": [2, 4, 2, 2], "shadow": 110.0}
+  },
+  "raglan_white": {
+    "file": "raglan_white.jpg",
+    "original": "IMG_0716.jpeg",
+    "matte": {"tol": 6.5, "remove": [[[140, 975], [333, 975], [333, 1012], [140, 1012]], [[869, 975], [1062, 975], [1062, 1012], [869, 1012]]]}
+  },
+  "crest_crew": {
+    "file": "crest_crew.jpg",
+    "original": "IMG_0745.jpeg",
+    "matte": {}
+  },
+  "charcoal_ls": {
+    "file": "charcoal_ls.jpg",
+    "original": "IMG_0746.jpeg",
+    "matte": {"trim": [2, 4, 2, 2], "tol": 9.0, "smooth": 7, "close": 26, "choke": 2.0, "refine": 0.0, "calm": 0.0}
+  },
+  "bomber": {
+    "file": "bomber.jpg",
+    "original": "IMG_0776.jpeg",
+    "matte": {"trim": [2, 2, 2, 5]}
+  },
+  "plaid": {
+    "file": "plaid.jpg",
+    "original": "IMG_1353.jpeg",
+    "matte": {"shadow": 150.0, "chroma": 15.0, "band": 6.0}
+  },
+  "denim": {
+    "file": "denim.jpg",
+    "original": "IMG_0784.jpeg",
+    "matte": {}
+  },
+  "hero": {
+    "file": "hoodie_stripe.jpg",
+    "original": "IMG_0747.jpeg",
+    "matte": {"trim": [8, 2, 2, 2], "tol": 7.0, "refine": 14.0, "band": 6.0, "open_holes": [[342, 1043], [854, 1045]]}
+  }
+}
