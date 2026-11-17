@@ -1,0 +1,231 @@
+{
+  "format": "landscape",
+  "frames": 1440,
+  "checked_at_scale": 0.25,
+  "stitch": {
+    "monotone": true,
+    "restarts": 0,
+    "frames_head_in_frame": 1272,
+    "frames_head_in_frame_but_no_thread": [],
+    "frames_with_thread_visible": 1440
+  },
+  "lighting": {
+    "max_step_all": 0.0369,
+    "at_frame": 146,
+    "max_step_on_holds": 0.0027,
+    "hold_frames_over_1pct": []
+  },
+  "type": {
+    "safe_rect": [
+      96,
+      54,
+      1824,
+      1026
+    ],
+    "boxes": {
+      "SAY LESS. (18.6-19.3 s) @ 18.7": {
+        "box": [
+          190.2,
+          406.7,
+          1099.1,
+          627.2
+        ],
+        "inside_safe": true
+      },
+      "SAY LESS. (18.6-19.3 s) @ 19.0": {
+        "box": [
+          189.3,
+          407.2,
+          1098.8,
+          627.9
+        ],
+        "inside_safe": true
+      },
+      "SAY LESS. (18.6-19.3 s) @ 19.3": {
+        "box": [
+          185.6,
+          407.8,
+          1096.1,
+          628.7
+        ],
+        "inside_safe": true
+      },
+      "OMERTÀ ACADEMY (end card) @ 21.6": {
+        "box": [
+          614.2,
+          546.4,
+          1307.3,
+          646.5
+        ],
+        "inside_safe": true
+      },
+      "OMERTÀ ACADEMY (end card) @ 23.9": {
+        "box": [
+          614.2,
+          546.4,
+          1307.3,
+          646.5
+        ],
+        "inside_safe": true
+      },
+      "EXPLORE THE COLLECTION. (end card) @ 21.6": {
+        "box": [
+          620.7,
+          706.6,
+          1298.7,
+          732.2
+        ],
+        "inside_safe": true
+      },
+      "EXPLORE THE COLLECTION. (end card) @ 23.9": {
+        "box": [
+          620.7,
+          706.6,
+          1298.7,
+          732.2
+        ],
+        "inside_safe": true
+      },
+      "O mark (end card) @ 21.6": {
+        "box": [
+          835.4,
+          318.5,
+          1084.6,
+          506.6
+        ],
+        "inside_safe": true
+      },
+      "O mark (end card) @ 23.9": {
+        "box": [
+          835.4,
+          318.5,
+          1084.6,
+          506.6
+        ],
+        "inside_safe": true
+      }
+    },
+    "clipped": []
+  },
+  "end_card": {
+    "frames": 144,
+    "seconds": 2.4,
+    "camera_travel_px": 0.0,
+    "max_mean_pixel_change_8bit": 0.235,
+    "all_copy_fully_on_at_21_6": true
+  },
+  "coverage": {
+    "raglan_black": {
+      "frames_lit_and_fully_in_frame": 257,
+      "seconds": 4.28
+    },
+    "raglan_white": {
+      "frames_lit_and_fully_in_frame": 158,
+      "seconds": 2.63
+    },
+    "crest_crew": {
+      "frames_lit_and_fully_in_frame": 113,
+      "seconds": 1.88
+    },
+    "charcoal_ls": {
+      "frames_lit_and_fully_in_frame": 99,
+      "seconds": 1.65
+    },
+    "bomber": {
+      "frames_lit_and_fully_in_frame": 89,
+      "seconds": 1.48
+    },
+    "plaid": {
+      "frames_lit_and_fully_in_frame": 48,
+      "seconds": 0.8
+    },
+    "denim": {
+      "frames_lit_and_fully_in_frame": 89,
+      "seconds": 1.48
+    },
+    "track": {
+      "frames_lit_and_fully_in_frame": 290,
+      "seconds": 4.83
+    }
+  },
+  "all_eight_appear": true,
+  "hero_reads": true,
+  "source_enlargement": {
+    "raglan_black": {
+      "open": 3.2,
+      "g1": 1.07
+    },
+    "raglan_white": {
+      "pair12": 0.86
+    },
+    "crest_crew": {
+      "prints": 0.84,
+      "pair34": 0.59
+    },
+    "charcoal_ls": {
+      "prints": 0.9,
+      "pair34": 0.63
+    },
+    "bomber": {
+      "pull": 1.3,
+      "bomber": 0.72
+    },
+    "plaid": {
+      "line": 1.51,
+      "zip": 1.36,
+      "script": 1.26,
+      "plaid": 0.84
+    },
+    "denim": {
+      "denim_in": 1.54,
+      "denim": 0.58
+    },
+    "track": {
+      "stripe": 1.35,
+      "hero": 0.77
+    }
+  },
+  "edges": {
+    "raglan_black": {
+      "edge_luma": 82.0,
+      "inner_luma": 83.0,
+      "edge_minus_inner": -0.9
+    },
+    "raglan_white": {
+      "edge_luma": 133.9,
+      "inner_luma": 128.2,
+      "edge_minus_inner": 5.7
+    },
+    "crest_crew": {
+      "edge_luma": 103.4,
+      "inner_luma": 102.9,
+      "edge_minus_inner": 0.5
+    },
+    "charcoal_ls": {
+      "edge_luma": 60.7,
+      "inner_luma": 61.3,
+      "edge_minus_inner": -0.6
+    },
+    "bomber": {
+      "edge_luma": 66.5,
+      "inner_luma": 63.8,
+      "edge_minus_inner": 2.7
+    },
+    "plaid": {
+      "edge_luma": 118.9,
+      "inner_luma": 118.4,
+      "edge_minus_inner": 0.5
+    },
+    "denim": {
+      "edge_luma": 144.2,
+      "inner_luma": 139.8,
+      "edge_minus_inner": 4.4
+    },
+    "track": {
+      "edge_luma": 82.8,
+      "inner_luma": 77.7,
+      "edge_minus_inner": 5.1
+    }
+  },
+  "passed": true
+}

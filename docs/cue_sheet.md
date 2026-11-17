@@ -26,9 +26,9 @@ Every cue accompanies motion that is visible on screen. Levels are peak, before 
 | 20 | 11.52 | fiber bright | -15 dB | the line carries out of the jacket into the denim (dur 0.7 s) |
 | 21 | 12.92 | tick | -16 dB | stitch crosses the fly seam |
 | 22 | 13.60 | tick | -17 dB | stitch reaches the far leg |
-| 23 | 13.90 | whoosh | -10 dB | foreground thread sweep (dur 0.62 s) |
+| 23 | 14.02 | whoosh | -10 dB | foreground thread sweep (dur 0.62 s) |
 | 24 | 14.40 | impact | -14 dB | the hero revealed |
-| 25 | 14.72 | tick | -16 dB | stitch surfaces on the chest band |
+| 25 | 14.82 | tick | -16 dB | stitch surfaces on the chest band |
 | 26 | 16.10 | tick | -17 dB | stitch leaves the chest band |
 | 27 | 19.20 | impact | -12 dB | the stitch sets off toward the O; lineup starts to drift |
 | 28 | 19.24 | fiber | -15 dB | the stitch runs to the O (dur 1.2 s) |

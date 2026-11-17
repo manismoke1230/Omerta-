@@ -41,6 +41,8 @@ class Way:
     lift: float = 1.0       # parallax at this waypoint (1 = on the stage plane)
     label: str = ""
     span: int = -1          # id of the lifted span this waypoint starts, if any
+    ax: float = 0.0         # extra world offset while the span is in the air: on the stage the
+    ay: float = 0.0         # thread lies in a calm curve; lifted, it swings across the lens
 
 
 class ThreadPath:
@@ -58,6 +60,10 @@ class ThreadPath:
         s = np.linspace(0.0, self.length, n)
         x = np.interp(s, cum, dense[:, 0])
         y = np.interp(s, cum, dense[:, 1])
+        air = pts + np.float64([[w.ax, w.ay] for w in ways])
+        dense_air, _ = catmull_rom(air, per_seg=per)
+        self.air_dx = np.interp(s, cum, dense_air[:, 0] - dense[:, 0])
+        self.air_dy = np.interp(s, cum, dense_air[:, 1] - dense[:, 1])
         seg = np.clip(np.searchsorted(self.way_s, s, side="right") - 1, 0, len(ways) - 2)
         modes = np.int32([w.mode for w in ways])
         lifts = np.float64([w.lift for w in ways])
@@ -98,6 +104,7 @@ class ThreadPath:
         """
         mode = self.mode.copy()
         lift = np.ones_like(self.lift)
+        x, y = self.x.copy(), self.y.copy()
         op_front = np.ones_like(self.lift)
         op_loose = np.ones_like(self.lift)
         both = np.zeros(self.lift.shape, bool)
@@ -111,12 +118,14 @@ class ThreadPath:
                 mode[m] = LOOSE
                 continue
             lift[m] = 1.0 + (self.lift[m] - 1.0) * e
-            x = min(e / 0.3, 1.0)                 # cross-fade air <-> stage, so nothing pops
-            op_front[m] = x
-            op_loose[m] = 1.0 - x
-            both |= m & (x < 1.0)
+            x[m] += self.air_dx[m] * e
+            y[m] += self.air_dy[m] * e
+            xf = min(e / 0.3, 1.0)                # cross-fade air <-> stage, so nothing pops
+            op_front[m] = xf
+            op_loose[m] = 1.0 - xf
+            both |= m & (xf < 1.0)
         loose_mode = np.where(both, LOOSE, mode)
-        return mode, loose_mode, lift, op_front, op_loose
+        return mode, loose_mode, lift, op_front, op_loose, x, y
 
     def at(self, label: str) -> np.ndarray:
         s = self.labels[label]
@@ -142,7 +151,7 @@ def thread_width(zoom: float) -> float:
 
 
 def _raster(path: ThreadPath, mode: int, s_head: float, pose, scale: float, size, pad_px: float,
-            mode_arr=None, lift_arr=None, op_arr=None):
+            mode_arr=None, lift_arr=None, op_arr=None, xy=None):
     """Rasterise one depth layer. Returns None or a dict of per-pixel data."""
     W, H = size
     cx, cy, zoom = pose
@@ -150,6 +159,7 @@ def _raster(path: ThreadPath, mode: int, s_head: float, pose, scale: float, size
     mode_arr = path.mode if mode_arr is None else mode_arr
     lift_arr = path.lift if lift_arr is None else lift_arr
     op_arr = np.ones_like(path.lift) if op_arr is None else op_arr
+    px_, py_ = (path.x, path.y) if xy is None else xy
     sel = (mode_arr == mode) & (path.s <= s_head + 0.5) & (op_arr > 1e-3)
     if not sel.any():
         return None
@@ -166,8 +176,8 @@ def _raster(path: ThreadPath, mode: int, s_head: float, pose, scale: float, size
             continue
         p = lift_arr[i0:i1 + 1]
         opv = op_arr[i0:i1 + 1]
-        sx = (path.x[i0:i1 + 1] - cx) * p * zs + W / 2
-        sy = (path.y[i0:i1 + 1] - cy) * p * zs + H / 2
+        sx = (px_[i0:i1 + 1] - cx) * p * zs + W / 2
+        sy = (py_[i0:i1 + 1] - cy) * p * zs + H / 2
         su = path.s[i0:i1 + 1]
         # a lifted thread is close to the lens: it reads much larger than its parallax alone
         wpx = np.maximum(w_world * zs * p ** 1.6, 1.25 * scale ** 0.5)
@@ -283,14 +293,15 @@ def draw_thread(time: float, layout, pose=None, scale: float = 1.0, size=None) -
     s_head = path.progress(time)
     zoom = pose[2]
     out = {}
-    mode_t, loose_mode_t, lift_t, op_front, op_loose = path.state(time)
+    mode_t, loose_mode_t, lift_t, op_front, op_loose, x_t, y_t = path.state(time)
     for mode in (LOOSE, STITCH, FRONT):
         if mode == LOOSE:
+            # a span that is settling is drawn on the stage (at rest) and in the air, cross-faded
             R = _raster(path, mode, s_head, pose, scale, size, 12 * scale, loose_mode_t,
                         np.ones_like(lift_t), np.where(loose_mode_t != mode_t, op_loose, 1.0))
         else:
             R = _raster(path, mode, s_head, pose, scale, size, 12 * scale, mode_t, lift_t,
-                        op_front if mode == FRONT else None)
+                        op_front if mode == FRONT else None, xy=(x_t, y_t))
         if R is None:
             out[mode] = None
             continue

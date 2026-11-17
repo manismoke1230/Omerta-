@@ -60,9 +60,19 @@ def _thread(L: Layout, cam: Camera) -> ThreadPath:
         sid = len(span_env)
         span_env[sid] = env
         q1, q2 = c + n * reach, c - n * reach
-        for pt, lf in ((a, 1.0), ((a + q1) / 2, 1 + (peak - 1) * 0.35), (q1, 1 + (peak - 1) * 0.8),
-                       (c, peak), (q2, 1 + (peak - 1) * 0.8), ((q2 + b) / 2, 1 + (peak - 1) * 0.35)):
-            ways.append(Way(float(pt[0]), float(pt[1]), FRONT, lf, "", sid))
+        air = [a, (a + q1) / 2, q1, c, q2, (q2 + b) / 2]
+        lifts = [1.0, 1 + (peak - 1) * 0.35, 1 + (peak - 1) * 0.8, peak, 1 + (peak - 1) * 0.8, 1 + (peak - 1) * 0.35]
+        # at rest the same thread lies in one calm arc from a to b
+        d = b - a
+        m = np.float64([-d[1], d[0]]) / max(np.hypot(*d), 1e-6)
+        if np.dot(c - (a + b) / 2, m) < 0:
+            m = -m
+        sag = min(0.16 * np.hypot(*d), 26.0)
+        for k, (pa, lf) in enumerate(zip(air, lifts)):
+            f = k / 6.0
+            rest = a + d * f + m * sag * np.sin(np.pi * f)
+            ways.append(Way(float(rest[0]), float(rest[1]), FRONT, lf, "", sid,
+                            float(pa[0] - rest[0]), float(pa[1] - rest[1])))
         w(b, LOOSE, lift=1.0)
 
     # 01  black-body raglan: up the dark knit, along both raglan seams, out the sleeve
@@ -152,9 +162,9 @@ def _thread(L: Layout, cam: Camera) -> ThreadPath:
            else ["out_r", "b_r", "c2b", "c2a", "c1b", "c1a", "b_l", "in_l", "beside_l"])
     a = P["denim"].A(dn[6]) + np.float64([10.0 if not L.mirror else -10.0, 6.0])
     hin = hero.A(seq[0])
-    b = hin + np.float64([-10.0 if not L.mirror else 10.0, 26.0])
-    lifted(a, b, t_mid=14.22, peak=7.0, reach=40.0,
-           env=[(13.62, 0.0), (13.90, 1.0), (14.52, 1.0), (14.98, 0.0)])
+    b = hin + np.float64([-16.0 if not L.mirror else 16.0, 5.0])
+    lifted(a, b, t_mid=14.34, peak=7.0, reach=40.0,
+           env=[(13.74, 0.0), (14.02, 1.0), (14.64, 1.0), (15.10, 0.0)])
     # 07  along the top edge of the chest band, under both drawcords
     g(HERO, seq[0], LOOSE, "hero_in")            # hidden under the sleeve
     g(HERO, seq[1], STITCH, "hero_band")
@@ -189,7 +199,7 @@ def _thread(L: Layout, cam: Camera) -> ThreadPath:
         (7.34, "bom_hem"), (9.14, "bom_pull"),
         (9.52, "plaid_hem"), (10.52, "plaid_turn"), (11.52, "plaid_l1"), (11.88, "plaid_out"),
         (12.06, "denim_in"), (12.92, "denim_mid"), (13.82, "denim_out"),
-        (14.46, "hero_in"), (14.70, "hero_band"), (16.10, "hero_out"), (16.95, "beside"),
+        (14.56, "hero_in"), (14.80, "hero_band"), (16.10, "hero_out"), (16.95, "beside"),
         (19.18, "beside"), (20.42, "end"),
     ]
     return ThreadPath(ways, keys, span_env)
@@ -246,8 +256,8 @@ def _camera(L: Layout) -> tuple[Camera, dict]:
         (11.50, 11.94, S["line"], (2.0, 1.6)),   #    in on one orange plaid line
         (11.94, 12.32, S["denim_in"], (1.5, 2.4)),  # 06 carried into the denim
         (12.34, 13.34, S["denim"], (2.0, 3.0)),  #    both legs and the waistband
-        (13.86, 14.56, S["stripe"], whip),       # 07 foreground thread sweep
-        (14.58, 15.20, S["hero"], (1.8, 2.8)),   #    complete front view by 15.20
+        (13.98, 14.68, S["stripe"], whip),       # 07 foreground thread sweep; hero lands on the bar
+        (14.70, 15.20, S["hero"], (1.8, 2.6)),   #    complete front view by 15.20
         (16.80, 18.20, S["lineup"], (2.0, 3.0)), # 08 ease out to the collection
         (19.20, 21.40, S["lockup"], (2.0, 2.6)), #    the stitch leads to the O
     ]
@@ -274,8 +284,8 @@ def _lights(L: Layout) -> dict[str, list[tuple[float, float]]]:
         "charcoal_ls": on_off(4.90, 7.12),
         "bomber": on_off(7.18, 9.56),
         "plaid": on_off(9.60, 12.02),
-        "denim": on_off(12.02, 14.34),
-        "track": [(14.06, 0.0), (14.50, 1.0)],
+        "denim": on_off(12.02, 14.44),
+        "track": [(14.20, 0.0), (14.58, 1.0)],
     }
     keys = {}
     for i, slot in enumerate(ORDER):

@@ -38,12 +38,16 @@ Also needed: confirmation that *Omertà* is pronounced "oh-mehr-TAH".
 
 Every source is about 1206 px wide, with the garment itself 900–1100 px across. That is enough for full-garment framing at 1080p (shown at roughly 1:1) but not for true close-ups. Consequences in the current cut:
 
-| Shot | Enlargement of the photo | Effect |
+| Shot | Enlargement of the photo (landscape / portrait) | Effect |
 |---|---|---|
-| Opening on dark knit (0.0–0.5 s) | 3.2× | fabric is soft; it is dark, moving and behind a sharp stitch |
-| Bomber zip pull | 1.3× landscape / 1.4× portrait | a modest push-in, not a macro |
-| Plaid line, denim entry | 1.5× | acceptable |
-| Everything else | ≤ 1.1× | clean |
+| Opening on dark knit (0.0–0.5 s) | 3.2× / 2.8× | fabric is soft; it is dark, moving and behind a sharp stitch |
+| Plaid line and denim entry | 1.5× / 1.5× | slightly soft, in motion |
+| Plaid zip and chest script | 1.3–1.4× / 1.3–1.5× | a modest push-in, not a macro |
+| Bomber zip pull | 1.3× / 1.4× | a modest push-in, not a macro |
+| Hero chest band | 1.35× / 1.65× | slightly soft in portrait |
+| Full-garment and pair shots | 0.4–1.1× | clean |
+
+These figures are measured by `python -m sayless qc` (`source_enlargement` in the report).
 
 Originals at 3000 px or more would allow the tight detail crops the beat sheet implies.
 
