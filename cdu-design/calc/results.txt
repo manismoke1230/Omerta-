@@ -5,42 +5,43 @@
 TCS  PG25  30 L/min  C=1999 W/K  dT=5.00 K  37.00 -> 32.00 C
 FWS  water 24 L/min  C=1665 W/K  dT=6.01 K  27.00 -> 33.01 C
 LMTD = 4.48 K   required UA (clean, no margin) = 2233 W/K
-Pr PG25 = 14.1   Pr water = 5.4
+Pr PG25 = 14.7   Pr water = 5.4
 
 ==============================================================================
 2. PLATE-COUNT SCAN (SWEP B25T-class geometry, Martin correlation)
 ==============================================================================
-Dh = 3.42 mm   area/plate = 600 cm2   chevron = 60 deg
+Dh = 3.31 mm   area/plate = 620 cm2   chevron = 60 deg
  N   A[m2]  Re_tcs Re_fws  U[W/m2K]  UA[W/K]  UA/UAreq  dP_tcs[kPa] dP_fws[kPa]
- 14  0.720    805   1136     3834     2759    1.24       24.2        10.5
- 20  1.079    537    795     3016     3256    1.46       12.2         5.8
- 24  1.319    439    663     2680     3535    1.58        8.9         4.3
- 30  1.679    345    530     2327     3907    1.75        6.3         3.1
- 40  2.279    254    398     1953     4451    1.99        4.2         2.1
+ 14  0.744    737   1099     3850     2865    1.28       25.4        10.9
+ 20  1.116    492    769     3034     3387    1.52       12.9         6.0
+ 24  1.364    402    641     2697     3680    1.65        9.4         4.5
+ 30  1.736    316    513     2346     4073    1.82        6.6         3.2
+ 40  2.357    233    385     1972     4647    2.08        4.4         2.2
 Sensitivity of the chosen size to the ASSUMED chevron angle:
-  chevron 45 deg: UA/UAreq = 1.38   dP_tcs =  3.3 kPa   dP_fws =  1.7 kPa
-  chevron 55 deg: UA/UAreq = 1.62   dP_tcs =  4.9 kPa   dP_fws =  2.4 kPa
-  chevron 60 deg: UA/UAreq = 1.75   dP_tcs =  6.3 kPa   dP_fws =  3.1 kPa
-  chevron 65 deg: UA/UAreq = 1.88   dP_tcs =  8.3 kPa   dP_fws =  4.1 kPa
-SELECTED: 30 plates.  Clean UA margin = 75 %
-  hold-up volume per side ~ 1.61 L
+  chevron 45 deg: UA/UAreq = 1.44   dP_tcs =  3.5 kPa   dP_fws =  1.7 kPa
+  chevron 55 deg: UA/UAreq = 1.69   dP_tcs =  5.2 kPa   dP_fws =  2.5 kPa
+  chevron 60 deg: UA/UAreq = 1.82   dP_tcs =  6.6 kPa   dP_fws =  3.2 kPa
+  chevron 65 deg: UA/UAreq = 1.96   dP_tcs =  8.8 kPa   dP_fws =  4.2 kPa
+SELECTED: 30 plates.  Clean UA margin = 82 %
+Cross-check, Kumar correlation: UA = 5107 W/K, margin 129 % (Martin is the lower, and is the design value)
+  hold-up volume per side ~ 1.60 L
 
 ==============================================================================
 3. OFF-DESIGN THERMAL PERFORMANCE (selected exchanger, UA derated 20 % for fouling)
 ==============================================================================
-Rating check, fouled: 10 kW, FWS 27 C / 24 L/min -> TCS supply 30.7 C (approach 3.7 K)
+Rating check, fouled: 10 kW, FWS 27 C / 24 L/min -> TCS supply 30.6 C (approach 3.6 K)
 
 Lowest achievable TCS supply at full facility flow (24 L/min), fouled:
  load[kW]  FWS_in[C]  TCS_supply[C]  TCS_return[C]  approach[K]
-      5        18         19.9           22.4          1.9
-      5        27         28.9           31.4          1.9
-      5        32         33.9           36.4          1.9
-     10        18         21.7           26.7          3.7
-     10        27         30.7           35.7          3.7
-     10        32         35.7           40.7          3.7
-     12        18         22.5           28.5          4.5
-     12        27         31.5           37.5          4.5
-     12        32         36.5           42.5          4.5
+      5        18         19.8           22.3          1.8
+      5        27         28.8           31.3          1.8
+      5        32         33.8           36.3          1.8
+     10        18         21.6           26.6          3.6
+     10        27         30.6           35.6          3.6
+     10        32         35.6           40.6          3.6
+     12        18         22.3           28.3          4.3
+     12        27         31.3           37.3          4.3
+     12        32         36.3           42.3          4.3
 
 Facility flow the control valve must pass to hold a 32 C supply setpoint, fouled:
  load[kW]  FWS_in[C]  FWS_flow[L/min]  FWS_out[C]
@@ -48,49 +49,49 @@ Facility flow the control valve must pass to hold a 32 C supply setpoint, fouled
       2        22            2.6           33.0
       2        27            4.8           33.0
       5        18            4.4           34.4
-      5        22            5.9           34.3
-      5        27           10.4           33.9
-     10        18            7.9           36.3
-     10        22           10.4           35.8
-     10        27           18.6           34.8
+      5        22            5.8           34.3
+      5        27           10.3           34.0
+     10        18            7.8           36.4
+     10        22           10.3           36.0
+     10        27           18.2           34.9
 
 Reduced TCS flow case (15 L/min, e.g. GB200-class trays at ~1.5 L/min/kW), 10 kW, FWS 27 C:
-   TCS supply 29.4 C, return 39.4 C
+   TCS supply 29.2 C, return 39.2 C
 
 ==============================================================================
 4. TCS HYDRAULIC BUDGET AT 30 L/min PG25
 ==============================================================================
-  Plate exchanger, TCS side (calc)                           6.3 kPa
+  Plate exchanger, TCS side (calc)                           6.6 kPa
   Filter 50 um, at dirty-change limit (ASSUMED)             30.0 kPa
   Flow meter (ASSUMED)                                      10.0 kPa
   Internal piping/valves, v=0.90 m/s (calc, ASSUMED K)       6.4 kPa
-  Internal total                                            52.7 kPa
+  Internal total                                            53.0 kPa
   External allowance to IT loop (requirement)              100.0 kPa
-  Pump duty                                                152.7 kPa = 15.1 m at 1.80 m3/h
-  Hydraulic power = 76 W
+  Pump duty                                                153.0 kPa = 15.2 m at 1.80 m3/h
+  Hydraulic power = 77 W
 
 ==============================================================================
 5. PUMP: Grundfos CME 1-3 class, variable speed
 ==============================================================================
 Curve model: H = n^2*31 - 1.20*Q^2  (Q in m3/h; shut-off head ASSUMED)
 Speed for duty point: 78 %
-  speed  78 %: shut-off head 19.0 m = 1.92 bar
+  speed  78 %: shut-off head 19.1 m = 1.92 bar
   speed  85 %: shut-off head 22.4 m = 2.26 bar
   speed 100 %: shut-off head 31.0 m = 3.13 bar
 Max discharge pressure at 85 % speed cap, dead-headed, warm: 3.41 bar g  (relief set 4.0 bar g, margin 15 %)
 Flow available at speed cap against the full dirty-filter system curve: 32.5 L/min
-Electrical input at duty (ASSUMED 35 % wire-to-water): 218 W -> heat added to coolant <= that
-Clean-filter, low-resistance IT loop (40 kPa external): speed 58 %
+Electrical input at duty (ASSUMED 35 % wire-to-water): 219 W -> heat added to coolant <= that
+Clean-filter, low-resistance IT loop (40 kPa external): speed 59 %
 
 ==============================================================================
 6. FACILITY-SIDE PRESSURE REQUIREMENT AND CONTROL VALVE
 ==============================================================================
-  Plate exchanger, FWS side (calc)                           3.1 kPa
+  Plate exchanger, FWS side (calc)                           3.2 kPa
   Y-strainer, part-loaded (ASSUMED)                          8.0 kPa
   Flow meter (ASSUMED)                                       7.0 kPa
   Piping, isolation and shut-off valves (ASSUMED)            6.0 kPa
   Control valve Cv 4.7 fully open (calc)                    12.5 kPa
-  Required facility supply-return dP at 24 L/min            36.6 kPa
+  Required facility supply-return dP at 24 L/min            36.7 kPa
   Valve authority = 0.34
 
 ==============================================================================

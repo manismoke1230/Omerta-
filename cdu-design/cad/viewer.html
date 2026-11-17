@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CDU-10 Layout</title>
+<style>
+:root{--bg:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7}}
+:root[data-theme="dark"]{--bg:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px Helvetica,Arial,sans-serif}
+#info{position:absolute;left:16px;top:12px;max-width:min(420px,calc(100vw - 32px))}
+#info h1{font-size:16px;margin:0 0 4px}#info p{margin:0;color:var(--ink2)}
+#tip{position:absolute;padding:4px 8px;background:var(--bg);border:1px solid var(--ink2);border-radius:4px;pointer-events:none;display:none}
+canvas{display:block}
+</style></head><body>
+<div id="info"><h1>CDU-10 general arrangement, Rev B</h1><p>600 x 800 x 1200 mm. Drag to rotate, scroll to zoom, hover a part for its tag. Layout model, not for construction.</p></div>
+<div id="tip"></div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const parts = [{"tag": "P-101", "desc": "Pump CME 1-3, axis front-to-back, drive at front", "kind": "box", "g": [60, 250, 60, 480, 190, 460], "colour": "#2a78d6"}, {"tag": "TK-101", "desc": "Expansion tank 8 L", "kind": "vcyl", "g": [163, 643, 103, 190, 500], "colour": "#1baf7a"}, {"tag": "E-101", "desc": "Plate exchanger B25T x30, insulated", "kind": "box", "g": [390, 549, 630, 750, 220, 786], "colour": "#eb6834"}, {"tag": "F-101", "desc": "Filter, 10 in. 316 housing, bowl down", "kind": "vcyl", "g": [475, 125, 65, 400, 790], "colour": "#6250d6"}, {"tag": "FT-101", "desc": "Flow meter, server loop", "kind": "box", "g": [280, 390, 320, 380, 700, 780], "colour": "#eda100"}, {"tag": "FT-201", "desc": "Flow meter, facility", "kind": "box", "g": [280, 390, 420, 480, 560, 640], "colour": "#eda100"}, {"tag": "TCV-201", "desc": "Control valve with actuator", "kind": "box", "g": [100, 230, 560, 640, 560, 760], "colour": "#e87ba4"}, {"tag": "XV-201", "desc": "Shut-off valve, spring return", "kind": "box", "g": [290, 470, 500, 600, 200, 420], "colour": "#e87ba4"}, {"tag": "STR-201", "desc": "Y-strainer 1 in.", "kind": "box", "g": [290, 420, 380, 460, 200, 280], "colour": "#e87ba4"}, {"tag": "PSV-101", "desc": "Relief valve 4.0 bar g", "kind": "box", "g": [280, 320, 490, 530, 470, 550], "colour": "#e87ba4"}, {"tag": "AV-101", "desc": "Automatic air vent", "kind": "box", "g": [450, 490, 565, 605, 740, 800], "colour": "#e87ba4"}, {"tag": "V-ISO", "desc": "Isolation valve bank V-101/102/201/202, levers forward", "kind": "box", "g": [130, 390, 230, 300, 600, 680], "colour": "#e87ba4"}, {"tag": "V-FILL", "desc": "Fill/drain valves and dry-break coupling", "kind": "box", "g": [270, 330, 60, 120, 190, 250], "colour": "#e87ba4"}, {"tag": "SP-101", "desc": "Sample port", "kind": "box", "g": [340, 380, 60, 100, 190, 240], "colour": "#e87ba4"}, {"tag": "PANEL", "desc": "Control panel enclosure with PLC, PSU, relays", "kind": "box", "g": [40, 560, 40, 260, 840.0, 1160], "colour": "#52514e"}, {"tag": "SHIELD", "desc": "Sloped drip shield", "kind": "box", "g": [40, 560, 40, 760, 805.0, 830.0], "colour": "#9a9993"}, {"tag": "TRAY", "desc": "Stainless drip tray, 40 mm deep", "kind": "box", "g": [40, 560, 40, 760, 140.0, 180.0], "colour": "#c3c2b7"}];
+const W=600.0, D=800.0, H=1200.0;
+const scene = new THREE.Scene();
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+scene.background = new THREE.Color(dark ? 0x1a1a19 : 0xfcfcfb);
+const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 1, 10000);
+camera.position.set(1500, -1700, 1400); camera.up.set(0,0,1);
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth, innerHeight); renderer.setPixelRatio(devicePixelRatio);
+document.body.appendChild(renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(W/2, D/2, H/2); controls.update();
+scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+const sun = new THREE.DirectionalLight(0xffffff, 0.8); sun.position.set(1000,-1500,2000); scene.add(sun);
+const meshes = [];
+for (const p of parts) {
+  let geo, pos;
+  if (p.kind === 'box') { const [x0,x1,y0,y1,z0,z1] = p.g; geo = new THREE.BoxGeometry(x1-x0, y1-y0, z1-z0); pos = [(x0+x1)/2,(y0+y1)/2,(z0+z1)/2]; }
+  else { const [cx,cy,r,z0,z1] = p.g; geo = new THREE.CylinderGeometry(r, r, z1-z0, 32); geo.rotateX(Math.PI/2); pos = [cx,cy,(z0+z1)/2]; }
+  const mat = new THREE.MeshLambertMaterial({color: p.colour, transparent: p.tag==='SHIELD'||p.tag==='PANEL', opacity: (p.tag==='SHIELD'||p.tag==='PANEL') ? 0.35 : 1});
+  const m = new THREE.Mesh(geo, mat); m.position.set(...pos); m.userData = p; scene.add(m); meshes.push(m);
+  m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({color: dark?0xf0efec:0x0b0b0b, transparent:true, opacity:0.35})));
+}
+const env = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(W,D,H)), new THREE.LineBasicMaterial({color: dark?0xc3c2b7:0x52514e}));
+env.position.set(W/2,D/2,H/2); scene.add(env);
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), tip = document.getElementById('tip');
+addEventListener('pointermove', e => {
+  mouse.set(e.clientX/innerWidth*2-1, -e.clientY/innerHeight*2+1); ray.setFromCamera(mouse, camera);
+  const hit = ray.intersectObjects(meshes, false)[0];
+  if (hit) { tip.style.display='block'; tip.style.left=(e.clientX+12)+'px'; tip.style.top=(e.clientY+12)+'px'; tip.textContent = hit.object.userData.tag + ': ' + hit.object.userData.desc; }
+  else tip.style.display='none';
+});
+addEventListener('resize', () => { camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+(function loop(){ requestAnimationFrame(loop); renderer.render(scene, camera); })();
+</script></body></html>

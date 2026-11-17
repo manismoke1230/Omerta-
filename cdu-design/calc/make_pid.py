@@ -6,7 +6,7 @@ A = o.append
 A(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" font-family="Helvetica,Arial,sans-serif" font-size="12">')
 A(f'<rect width="{W}" height="{H}" fill="#ffffff"/>')
 A('<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>')
-A('<text x="30" y="34" font-size="18" font-weight="bold">CDU-10 simplified P&amp;ID - Rev A (preliminary design, not for construction)</text>')
+A('<text x="30" y="34" font-size="18" font-weight="bold">CDU-10 simplified P&amp;ID - Rev B (preliminary design, not for construction)</text>')
 TCS, FWS, INK = "#c2410c", "#1d4ed8", "#111827"
 YT, YB = 190, 520          # top and bottom process lines
 def line(x1, y1, x2, y2, c, arrow=False, dash=False):
@@ -68,13 +68,13 @@ label(725, YT+118, "to drip tray", size=10)
 box(700, YT-80, "AV-101", "air vent", TCS, 66, 34); line(700, YT, 700, YT-63, TCS)
 box(760, YB, "F-101", "filter 50 um", TCS, 84)
 inst(760, YB, "PDT-101", up=False)
-inst(840, YB, "TT-101"); inst(890, YB, "PT-103"); box(960, YB, "FT-101", "mag flow", TCS, 72)
+inst(840, YB, "TT-101"); box(905, YB, "FT-101", "mag flow", TCS, 72); inst(975, YB, "PT-103")
 box(1085, YB, "V-102", "isolation", TCS, 66)
 # bypass
 line(1025, YB, 1025, YT, TCS, False, True); box(1025, (YT+YB)/2+30, "V-105", "min-flow bypass", TCS, 96, 36)
 # fill / drain / sample
 box(840, YB+80, "V-103/104", "fill / drain", TCS, 90, 34); line(840, YB, 840, YB+63, TCS)
-box(960, YB+80, "SP-101", "sample port", TCS, 84, 34); line(960, YB+20, 960, YB+63, TCS)
+box(960, YB+80, "SP-101", "sample port", TCS, 84, 34); line(960, YB, 960, YB+63, TCS)
 
 # non-process instruments
 box(260, 640, "LDS-301", "tray leak rope", INK, 100, 34); box(380, 640, "LDS-302", "hose-end leak", INK, 100, 34)

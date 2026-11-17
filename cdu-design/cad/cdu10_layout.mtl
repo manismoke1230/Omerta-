@@ -1,0 +1,40 @@
+newmtl pump
+Kd 0.165 0.471 0.839
+d 1.0
+
+newmtl vessel
+Kd 0.106 0.686 0.478
+d 1.0
+
+newmtl hx
+Kd 0.922 0.408 0.204
+d 1.0
+
+newmtl filter
+Kd 0.384 0.314 0.839
+d 1.0
+
+newmtl inst
+Kd 0.929 0.631 0.000
+d 1.0
+
+newmtl valve
+Kd 0.910 0.482 0.643
+d 1.0
+
+newmtl panel
+Kd 0.322 0.318 0.306
+d 1.0
+
+newmtl shield
+Kd 0.604 0.600 0.576
+d 1.0
+
+newmtl tray
+Kd 0.765 0.761 0.718
+d 1.0
+
+newmtl frame
+Kd 0.75 0.75 0.73
+d 0.15
+

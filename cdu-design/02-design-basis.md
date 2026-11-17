@@ -1,4 +1,4 @@
-# 02 — Design basis and interfaces
+# 02 — Design basis and interfaces (Rev B)
 
 ## Site: New Albany, Ohio (reference)
 
@@ -21,10 +21,11 @@ Central Ohio is humid in summer and well below freezing in winter. The design th
 | Coolant | Inhibited PG25 | D-04 |
 | Flow | 3–30 L/min | Two servers at 12 L/min minimum each, or GB200-class trays at about 1.5 L/min per kW |
 | Supply temperature | 32 °C default, adjustable 25–40 °C | Supermicro publishes a 40 °C maximum inlet; a QCT document gives 45 °C for GB200 NVL72 |
-| Supply stability | ±1 K steady state | Target |
+| Supply stability | ±0.5 K steady state; under 2 K on a 2 → 10 kW step | Simulated: 0.14 K ripple, 0.93 K step overshoot |
 | Pressure available | 100 kPa at 30 L/min | D-06 |
 | Static pressure | 1.0 bar g cold, about 1.1 bar g warm | Calculated |
 | Maximum pressure the servers can see | 3.4 bar g (pump dead-headed), 4.0 bar g (relief) | Calculated |
+| High-temperature trip | Server maximum inlet − 2 K (38 °C for 40 °C servers), entered on the HMI | Rev B correction |
 | Filtration | 50 µm full flow | D-14 |
 | Connection | 1" sanitary clamp, hose kit to bay manifold | D-20 |
 
@@ -46,11 +47,13 @@ Central Ohio is humid in summer and well below freezing in winter. The design th
 |---|---|
 | Room | 15–35 °C, non-condensing, dew point up to 23 °C |
 | Heat released to room | Under 300 W from the pump motor, drive and controls |
-| Power | 208–240 V single-phase 60 Hz, 15 A circuit |
+| Power | 208–240 V single-phase 60 Hz, about 1.1 kW maximum, through a C20 inlet (see [09-electrical.md](09-electrical.md)) |
 | Network | One Ethernet port for Modbus TCP, read-only by default |
 | Hardwired signals | "Server load permit" relay contact out; remote stop in |
+| **Load shedding** | **When the permit opens, server load must fall below 20 % within 10 s** (hold point HP-09) |
 | Drain | Not required. Relief and drain discharge to the internal tray. |
 | Service clearance | 900 mm in front; none needed at sides or rear after installation |
+| Footprint and mass | 600 × 800 mm, 1200 mm high; about 151 kg filled |
 
 ## Applicable codes and approvals
 
